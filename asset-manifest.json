@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/jm-city-hunt/static/css/main.1eacbfba.css",
-    "main.js": "/jm-city-hunt/static/js/main.de9b5e1f.js",
+    "main.js": "/jm-city-hunt/static/js/main.a9b235af.js",
     "static/js/787.3053a40a.chunk.js": "/jm-city-hunt/static/js/787.3053a40a.chunk.js",
     "index.html": "/jm-city-hunt/index.html",
     "main.1eacbfba.css.map": "/jm-city-hunt/static/css/main.1eacbfba.css.map",
-    "main.de9b5e1f.js.map": "/jm-city-hunt/static/js/main.de9b5e1f.js.map",
+    "main.a9b235af.js.map": "/jm-city-hunt/static/js/main.a9b235af.js.map",
     "787.3053a40a.chunk.js.map": "/jm-city-hunt/static/js/787.3053a40a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1eacbfba.css",
-    "static/js/main.de9b5e1f.js"
+    "static/js/main.a9b235af.js"
   ]
 }
