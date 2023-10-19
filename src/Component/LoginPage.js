@@ -7,7 +7,7 @@ export default function LoginPage() {
         const formData = new FormData(e.target);
         const formJson = Object.fromEntries(formData.entries());
         console.log(formJson);
-        const msgJSON = await fetch("http://jm-city-hunt-server.vercel.app/login", {
+        const msgJSON = await fetch("https://jm-city-hunt-server.vercel.app/login", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ groupNo: formJson.groupNo, password: formJson.password })
