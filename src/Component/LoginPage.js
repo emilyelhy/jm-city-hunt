@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+    const [loginFail, setLoginFail] = useState(false);
+    const navigate = useNavigate();
 
     const login = async (e) => {
         e.preventDefault();
@@ -15,6 +18,13 @@ export default function LoginPage() {
         const msg = await msgJSON.json();
         const res = msg.res;
         console.log("[LoginPage.js] Received Msg: \"" + res + "\"");
+        if (res === "success") {
+            setLoginFail(false);
+            localStorage.setItem('group', formJson.groupNo);
+            navigate("/location");
+        } else {
+            setLoginFail(true);
+        }
     };
 
     return (
@@ -27,6 +37,7 @@ export default function LoginPage() {
                 <label>
                     Password: <input name="password" />
                 </label>
+                {loginFail ? <h6 style={{ color: "#FF0000" }}>Wrong password</h6> : <></>}
                 <button type="submit">Login</button>
             </form>
         </div>
