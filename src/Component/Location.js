@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import LoadingOverlay from 'react-loading-overlay';
-import Button from '@mui/material/Button';
-import { useNavigate } from "react-router-dom";
 
 export default function Location() {
     const [longitude, setLongitude] = useState();
     const [latitude, setLatitude] = useState();
     const [loggedInGroup, setLoggedInGroup] = useState();
-    const navigate = useNavigate();
 
     const success = (position) => {
         setLatitude(position.coords.latitude);
@@ -18,10 +15,7 @@ export default function Location() {
         console.log("Error in retrieving location details");
     };
 
-    const logout = () => {
-        localStorage.clear();
-        navigate("/login");
-    }
+    
 
     useEffect(() => {
         console.log("Running from Location.js");
@@ -38,8 +32,6 @@ export default function Location() {
 
     return (
         <div className="Location" style={{ flex: 1, backgroundColor: (!longitude || !latitude) ? "#000000" : "#00FF99", height: "100vh", alignItems: 'center', justifyContent: 'center', display: "flex" }}>
-            
-            <Button variant="contained" style={{ position: "absolute", right: 20, top: 10 }} onClick={logout}>Logout</Button>
             <LoadingOverlay
                 active={!longitude || !latitude}
                 spinner

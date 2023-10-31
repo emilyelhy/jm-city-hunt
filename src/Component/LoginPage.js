@@ -18,10 +18,10 @@ export default function LoginPage() {
         const msg = await msgJSON.json();
         const res = msg.res;
         console.log("[LoginPage.js] Received Msg: \"" + res + "\"");
-        if (res === "success") {
+        if (res) {
             setLoginFail(false);
             localStorage.setItem('group', formJson.groupNo);
-            navigate("/location");
+            navigate("/menu");
         } else {
             setLoginFail(true);
         }

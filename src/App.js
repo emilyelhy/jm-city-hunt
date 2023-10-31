@@ -5,6 +5,7 @@ import './App.css';
 
 import LoginPage from './Component/LoginPage';
 import Location from './Component/Location';
+import Dashboard from './Component/Dashboard';
 
 function App() {
     const [loggedInGroup, setLoggedInGroup] = useState();
@@ -17,9 +18,10 @@ function App() {
         <div className="App">
             <HashRouter>
                 <Routes>
-                    <Route exact path="/" element={loggedInGroup ? <Navigate to="/location" /> : <Navigate to="/login" />} />
+                    <Route exact path="/" element={loggedInGroup ? <Navigate to="/menu" /> : <Navigate to="/login" />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/location" element={<Location />} />
+                    <Route path="/menu" element={<Dashboard />} />
                 </Routes>
             </HashRouter>
         </div>
