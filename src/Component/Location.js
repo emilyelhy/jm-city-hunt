@@ -15,8 +15,6 @@ export default function Location() {
         console.log("Error in retrieving location details");
     };
 
-    
-
     useEffect(() => {
         console.log("Running from Location.js");
         if (navigator.geolocation) {

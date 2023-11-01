@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -10,14 +10,20 @@ import { useNavigate } from "react-router-dom";
 
 import Location from "./Location";
 import History from "./History";
+import ChangePasswordPage from "./ChangePasswordPage";
 
 export default function Dashboard() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [currentPage, setCurrentPage] = useState("Location");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!localStorage.getItem("group")) navigate("/login");
+    }, [navigate]);
     
     const changePassword = () => {
-        // nav to change password page
+        toggleDrawer(false);
+        setCurrentPage("ChangePassword");
     };
     const logout = () => {
         localStorage.clear();
@@ -70,7 +76,7 @@ export default function Dashboard() {
                 </List>
             </Drawer>
             <div style={{ flex: 1, display: "flex", height: "100vh" }}>
-                {currentPage === "Location" ? <Location /> : currentPage === "History" ? <History /> : <></>}
+                {currentPage === "Location" ? <Location /> : currentPage === "History" ? <History /> : currentPage === "ChangePassword" ? <ChangePasswordPage /> : <></>}
             </div>
         </div>
     )

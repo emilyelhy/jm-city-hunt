@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
     const [loginFail, setLoginFail] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (localStorage.getItem("group")) navigate("/menu");
+    }, [navigate]);
+
     const login = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const formJson = Object.fromEntries(formData.entries());
         console.log(formJson);
+        if(!formJson.groupNo || !formJson.password) {
+            setLoginFail(true);
+            return;
+        }
         const msgJSON = await fetch("https://jm-city-hunt-server.vercel.app/login", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
