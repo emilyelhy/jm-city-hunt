@@ -8,13 +8,13 @@ import { BiCurrentLocation } from "react-icons/bi";
 import { ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import Location from "./Location";
+import CurrentTaskPage from "./CurrentTaskPage";
 import History from "./History";
 import ChangePasswordPage from "./ChangePasswordPage";
 
 export default function Dashboard() {
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [currentPage, setCurrentPage] = useState("Location");
+    const [currentPage, setCurrentPage] = useState("CurrentTask");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,7 +29,7 @@ export default function Dashboard() {
         localStorage.clear();
         navigate("/login");
     };
-    const PAGE_COMPONENT = [{ title: "Location", icon: BiCurrentLocation }, { title: "History", icon: AiOutlineHistory }];
+    const PAGE_COMPONENT = [{ title: "Current Task", icon: BiCurrentLocation }, { title: "History", icon: AiOutlineHistory }];
     const ACCOUNT_COMPONENT = [{ title: "Change Password", func: changePassword }, { title: "Logout", func: logout }];
 
     const toggleDrawer = (status) => {
@@ -38,7 +38,7 @@ export default function Dashboard() {
 
     const togglePage = (component) => {
         toggleDrawer(false);
-        setCurrentPage(component.title);
+        setCurrentPage(component.title.replace(/\s+/g, ''));
     };
 
     return (
@@ -76,7 +76,7 @@ export default function Dashboard() {
                 </List>
             </Drawer>
             <div style={{ flex: 1, display: "flex", height: "100vh" }}>
-                {currentPage === "Location" ? <Location /> : currentPage === "History" ? <History /> : currentPage === "ChangePassword" ? <ChangePasswordPage /> : <></>}
+                {currentPage === "CurrentTask" ? <CurrentTaskPage /> : currentPage === "History" ? <History /> : currentPage === "ChangePassword" ? <ChangePasswordPage /> : <></>}
             </div>
         </div>
     )
