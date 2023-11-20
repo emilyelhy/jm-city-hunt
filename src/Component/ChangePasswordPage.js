@@ -44,7 +44,7 @@ export default function ChangePasswordPage() {
     };
 
     return (
-        <div className="ChangePasswordPage" style={{ display: "flex", flex: 1, height: "100vh" }}>
+        <div className="ChangePasswordPage" style={{ display: "flex", flex: 1 }}>
             <form className="ChangePasswordInput" onSubmit={changePassword}>
                 <h5>
                     Updating password of group {currentGroup}

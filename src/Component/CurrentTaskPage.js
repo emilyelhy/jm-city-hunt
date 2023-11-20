@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Button from '@mui/material/Button';
 import LoadingOverlay from 'react-loading-overlay';
 
 export default function CurrentTaskPage() {
@@ -62,25 +63,48 @@ export default function CurrentTaskPage() {
         if (loggedInGroup) getCurrentCkpt();
     }, [loggedInGroup]);
 
+    const validateLocation = async (e) => {
+        e.preventDefault();
+        const msgJSON = await fetch("https://jm-city-hunt-server.vercel.app/validatelocation", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ groupNo: loggedInGroup, latitude: latitude, longitude: longitude, ckptNo: currentCkptNo })
+        });
+        const msg = await msgJSON.json();
+        if (msg.res) {
+            window.location.reload(false);
+        }
+        else {
+            console.log("Not in range");
+        }
+    };
+
     return (
-        <div className="CurrentTaskPage" style={{ flex: 1, backgroundColor: (!longitude || !latitude) ? "#000000" : "#00FF99", height: "100vh", alignItems: 'center', justifyContent: 'center', display: "flex" }}>
+        <div className="CurrentTaskPage" style={{ flex: 1, backgroundColor: (!longitude || !latitude) ? "#000000" : "#00FF99", alignItems: 'center', justifyContent: 'center', display: "flex", overflow: "scroll" }}>
             <LoadingOverlay
                 active={!longitude || !latitude}
                 spinner
                 text="Retrieving..."
                 fadeSpeed={100}>
-                <h2>Group {loggedInGroup} logged in</h2>
-                {currentCkptNo ?
+                {latitude && longitude ?
                     <div>
-                        <h3 style={{ marginBottom: 0 }}>Current checkpoint detail:</h3>
-                        <h4 style={{ margin: 0 }}>Checkpoint No: {currentCkptNo}, Location: {ckptLocation.latitude}, {ckptLocation.longitude}</h4>
-                        <h4 style={{ margin: 0 }}>Clue: {ckptClue}, Task Content: {ckptTaskContent}</h4>
-                        <img style={{maxWidth: "50%"}} src={`data:image/png;base64,${imageByteArray}`} alt="Clue of task in pic"></img>
+                        <h2>Group {loggedInGroup} logged in</h2>
+                        {currentCkptNo ?
+                            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                                <h3 style={{ marginBottom: 0 }}>Current checkpoint detail:</h3>
+                                <h4 style={{ margin: 0 }}>Checkpoint No: {currentCkptNo}, Location: {ckptLocation.latitude}, {ckptLocation.longitude}</h4>
+                                <h4 style={{ margin: 0 }}>Clue: {ckptClue}, Task Content: {ckptTaskContent}</h4>
+                                <img style={{ maxWidth: "50%" }} src={`data:image/png;base64,${imageByteArray}`} alt="Clue of task in pic"></img>
+                                <Button variant="contained" onClick={validateLocation}>Validate Location</Button>
+                            </div>
+                            :
+                            <h3>Game Ended</h3>
+                        }
+                        <h6>Detected Location: Latitude: {latitude}, Longitude: {longitude}</h6>
                     </div>
                     :
                     <></>
                 }
-                <h6>Detected Location: Latitude: {latitude}, Longitude: {longitude}</h6>
             </LoadingOverlay>
         </div>
     )

@@ -42,7 +42,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="Dashboard" style={{ flex: 1, display: "flex", height: "100vh" }}>
+        <div className="Dashboard" style={{ flex: 1, display: "flex" }}>
             <Button variant="outlined" style={{ position: "absolute", right: 20, top: 10 }} onClick={() => toggleDrawer(true)}>
                 <AiOutlineMenu />
             </Button>
@@ -75,7 +75,7 @@ export default function Dashboard() {
                     ))}
                 </List>
             </Drawer>
-            <div style={{ flex: 1, display: "flex", height: "100vh" }}>
+            <div style={{ flex: 1, display: "flex" }}>
                 {currentPage === "CurrentTask" ? <CurrentTaskPage /> : currentPage === "History" ? <History /> : currentPage === "ChangePassword" ? <ChangePasswordPage /> : <></>}
             </div>
         </div>

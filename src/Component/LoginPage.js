@@ -36,7 +36,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="Login" style={{ display: "flex", flex: 1, flexDirection: "column", height: "100vh", alignItems: 'center', justifyContent: 'center' }}>
+        <div className="Login" style={{ display: "flex", flex: 1, flexDirection: "column", alignItems: 'center', justifyContent: 'center' }}>
             <h2>Login Page</h2>
             <form className="LoginInput" onSubmit={login}>
                 <label>
