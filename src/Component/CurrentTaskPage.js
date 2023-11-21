@@ -65,6 +65,7 @@ export default function CurrentTaskPage() {
 
     const validateLocation = async (e) => {
         e.preventDefault();
+        navigator.geolocation.getCurrentPosition(success, error);
         const msgJSON = await fetch("https://jm-city-hunt-server.vercel.app/validatelocation", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
