@@ -11,6 +11,7 @@ export default function CurrentTaskPage() {
     const [ckptClue, setCkptClue] = useState();
     const [ckptTaskContent, setCkptTaskContent] = useState();
     const [imageByteArray, setImageByteArray] = useState();
+    const [isGameEnd, setIsGameEnd] = useState(false);
 
     const success = (position) => {
         setLatitude(position.coords.latitude);
@@ -44,6 +45,7 @@ export default function CurrentTaskPage() {
             const msg = await msgJSON.json();
             if (Object.keys(msg).length === 0) {
                 console.log("Game ended");
+                setIsGameEnd(true);
                 return;
             }
             console.log(msg);
@@ -91,7 +93,7 @@ export default function CurrentTaskPage() {
                     <div>
                         <h2>Group {loggedInGroup} logged in</h2>
                         {currentCkptNo ?
-                            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                                 <h3 style={{ marginBottom: 0 }}>Current checkpoint detail:</h3>
                                 <h4 style={{ margin: 0 }}>Checkpoint No: {currentCkptNo}, Location: {ckptLocation.latitude}, {ckptLocation.longitude}</h4>
                                 <h4 style={{ margin: 0 }}>Clue: {ckptClue}, Task Content: {ckptTaskContent}</h4>
@@ -99,7 +101,12 @@ export default function CurrentTaskPage() {
                                 <Button variant="contained" onClick={validateLocation}>Validate Location</Button>
                             </div>
                             :
-                            <h3>Game Ended</h3>
+                            <></>
+                        }
+                        {isGameEnd ?
+                            <h3>Game End</h3>
+                            :
+                            <></>
                         }
                         <h6>Detected Location: Latitude: {latitude}, Longitude: {longitude}</h6>
                     </div>
