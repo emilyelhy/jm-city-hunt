@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import LoadingOverlay from 'react-loading-overlay';
 import { AiOutlineCheck, AiOutlineClose, AiOutlineCompass } from "react-icons/ai";
 
 export default function History() {
@@ -50,7 +49,7 @@ export default function History() {
     }, [ckptRecord, taskRecord])
 
     return (
-        <div className="History" style={{ flex: 1, display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <div className="History" style={{ flex: 1, display: "flex", alignItems: 'center', justifyContent: 'normal', flexDirection: 'column', overflow: "scroll" }}>
             {ckptRecord && taskRecord ?
                 <div>
                     <h4>History Page of Group {loggedInGroup}</h4>
