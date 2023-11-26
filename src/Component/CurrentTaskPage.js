@@ -67,19 +67,22 @@ export default function CurrentTaskPage() {
 
     const validateLocation = async (e) => {
         e.preventDefault();
-        navigator.geolocation.getCurrentPosition(success, error);
-        const msgJSON = await fetch("https://jm-city-hunt-server.vercel.app/validatelocation", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ groupNo: loggedInGroup, latitude: latitude, longitude: longitude, ckptNo: currentCkptNo })
-        });
-        const msg = await msgJSON.json();
-        if (msg.res) {
-            window.location.reload(false);
-        }
-        else {
-            console.log("Not in range");
-        }
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const msgJSON = await fetch("https://jm-city-hunt-server.vercel.app/validatelocation", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ groupNo: loggedInGroup, latitude: latitude, longitude: longitude, ckptNo: currentCkptNo })
+            });
+            const msg = await msgJSON.json();
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+            if (msg.res) {
+                window.location.reload(false);
+            }
+            else {
+                console.log("Not in range");
+            }
+        }, error);
     };
 
     return (
