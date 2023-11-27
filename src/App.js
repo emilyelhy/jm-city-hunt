@@ -6,6 +6,7 @@ import './App.css';
 import LoginPage from './Component/LoginPage';
 import Dashboard from './Component/Dashboard';
 import CalibratePage from './Component/CalibratePage';
+import InfoPage from './Component/InfoPage';
 
 function App() {
     const [loggedInGroup, setLoggedInGroup] = useState();
@@ -18,7 +19,8 @@ function App() {
         <div className="App">
             <HashRouter>
                 <Routes>
-                    <Route exact path="/" element={loggedInGroup ? <Navigate to="/menu" /> : <Navigate to="/login" />} />
+                    <Route exact path="/" element={loggedInGroup ? <Navigate to="/menu" /> : <Navigate to="/info" />} />
+                    <Route path="/info" element={<InfoPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/menu" element={<Dashboard />} />
                     <Route path="/calibrate" element={<CalibratePage />} />
