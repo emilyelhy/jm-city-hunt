@@ -9,6 +9,10 @@ export default function InfoPage() {
         navigate("/login");
     };
 
+    const navToRegister = () => {
+        navigate("/register");
+    };
+
     return (
         <div className="InfoPage">
             <h1>Event Title</h1>
@@ -17,7 +21,7 @@ export default function InfoPage() {
                 <br />
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A erat nam at lectus urna duis convallis convallis tellus. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras. Felis eget velit aliquet sagittis id. Sit amet facilisis magna etiam. At ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget. Cursus euismod quis viverra nibh cras pulvinar mattis nunc. Elit eget gravida cum sociis natoque penatibus et magnis dis. Varius sit amet mattis vulputate enim nulla aliquet porttitor lacus. Bibendum est ultricies integer quis. Magna fermentum iaculis eu non diam phasellus.
             </h4>
-            <Button variant="contained" style={{ marginRight: 10 }}>Register</Button>
+            <Button variant="contained" style={{ marginRight: 10 }} onClick={navToRegister}>Register</Button>
             <Button variant="contained" style={{ marginLeft: 10 }} onClick={navToLogin}>Login</Button>
             <h4>
                 Event T&C
