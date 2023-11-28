@@ -70,7 +70,7 @@ export default function RegisterPage() {
             </div>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 30 }}>
                 <h4 style={{ margin: 15 }}>Password</h4>
-                <TextField variant="outlined" label="Password" value={password} onChange={(e) => setPassword(e.target.value)}></TextField>
+                <TextField variant="outlined" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} required></TextField>
             </div>
             <div>
                 <h3 style={{ marginBottom: 5 }}>T&C</h3>
