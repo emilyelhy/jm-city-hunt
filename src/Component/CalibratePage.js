@@ -26,22 +26,23 @@ export default function CalibratePage() {
             });
             const dist = await distJSON.json();
             const distArray = [...distanceList]
-            distArray[i] = dist.distance;
+            distArray[i] = { distanceY: dist.distanceY, distanceF: dist.distanceF };
             setDistanceList(distArray);
             setCurrentLat(position.coords.latitude);
             setCurrentLong(position.coords.longitude);
         }, error);
     };
 
-    const calibrate = async (e, ckpt, i) => {
+    const calibrate = async (e, ckpt, type) => {
         e.preventDefault();
         navigator.geolocation.getCurrentPosition(async (position) => {
             const resJSON = await fetch("https://jm-city-hunt-server.vercel.app/calibrate", {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude, ckptNo: ckpt.ckptNo })
+                body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude, ckptNo: ckpt.ckptNo, type: type })
             });
             const res = await resJSON.json();
+            console.log(res)
             if (res.res) {
                 const listJSON = await fetch("https://jm-city-hunt-server.vercel.app/allckpt", {
                     method: "GET"
@@ -59,7 +60,7 @@ export default function CalibratePage() {
             });
             const list = await listJSON.json();
             setCkptList(list.ckptList);
-            setDistanceList(new Array(list.ckptList.length).fill(-999));
+            setDistanceList(new Array(list.ckptList.length).fill({ distanceY: -999, distanceF: -999 }));
         };
         init();
     }, []);
@@ -91,10 +92,15 @@ export default function CalibratePage() {
                         return (
                             <div style={{ borderWidth: 1, borderColor: "#000000", borderStyle: "solid", paddingLeft: 20, paddingRight: 20, margin: 10 }} key={i}>
                                 <h5>ckpt #: {ckpt.ckptNo}, description: {ckpt.description}</h5>
-                                <h5>Saved geolocation: ({ckpt.location.latitude}, {ckpt.location.longitude})</h5>
-                                <h5>Distance to this ckpt: {distanceList[i]}km</h5>
+                                <h5 style={{ marginBottom: 0 }}>Saved geolocation: </h5>
+                                <h5 style={{ margin: 0 }}>Youth: ({ckpt.location.Y.latitude}, {ckpt.location.Y.longitude})</h5>
+                                <h5 style={{ marginTop: 0 }}>Family: ({ckpt.location.F.latitude}, {ckpt.location.F.longitude})</h5>
+                                <h5 style={{ marginBottom: 0 }}>Distance to this ckpt:</h5>
+                                <h5 style={{ margin: 0 }}>Youth: {distanceList[i].distanceY * 1000}m</h5>
+                                <h5 style={{ marginTop: 0 }}>Family: {distanceList[i].distanceF * 1000}m</h5>
                                 <Button variant="contained" style={{ margin: 10 }} onClick={(e) => calculateDistance(e, ckpt, i)}>Calculate distance</Button>
-                                <Button variant="contained" style={{ margin: 10 }} onClick={(e) => calibrate(e, ckpt, i)}>Calibrate</Button>
+                                <Button variant="contained" color="error" style={{ margin: 10 }} onClick={(e) => calibrate(e, ckpt, "Y")}>Calibrate Youth</Button>
+                                <Button variant="contained" color="error" style={{ margin: 10 }} onClick={(e) => calibrate(e, ckpt, "F")}>Calibrate Family</Button>
                             </div>
                         )
                     })}
