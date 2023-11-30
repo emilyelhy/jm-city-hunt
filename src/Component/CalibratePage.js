@@ -42,7 +42,6 @@ export default function CalibratePage() {
                 body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude, ckptNo: ckpt.ckptNo, type: type })
             });
             const res = await resJSON.json();
-            console.log(res)
             if (res.res) {
                 const listJSON = await fetch("https://jm-city-hunt-server.vercel.app/allckpt", {
                     method: "GET"

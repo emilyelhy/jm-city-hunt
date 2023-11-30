@@ -14,7 +14,7 @@ export default function LoginPage() {
         const formData = new FormData(e.target);
         const formJson = Object.fromEntries(formData.entries());
         console.log(formJson);
-        if(!formJson.groupNo || !formJson.password) {
+        if (!formJson.groupNo || !formJson.password) {
             setLoginFail(true);
             return;
         }
@@ -38,7 +38,7 @@ export default function LoginPage() {
     return (
         <div className="Login" style={{ display: "flex", flex: 1, flexDirection: "column", alignItems: 'center', justifyContent: 'center' }}>
             <h2>Login Page</h2>
-            <form className="LoginInput" onSubmit={login}>
+            <form className="LoginInput" onSubmit={(e) => login(e)}>
                 <label>
                     Group no: <input name="groupNo" />
                 </label>
