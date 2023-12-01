@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import CurrentTaskPage from "./CurrentTaskPage";
 import History from "./History";
 import ChangePasswordPage from "./ChangePasswordPage";
+import ChangeMemberPage from "./ChangeMemberPage";
 
 export default function Dashboard() {
     const [openDrawer, setOpenDrawer] = useState(false);
@@ -18,19 +19,23 @@ export default function Dashboard() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!localStorage.getItem("group")) navigate("/login");
+        if (!localStorage.getItem("group")) navigate("/login");
     }, [navigate]);
-    
+
     const changePassword = () => {
         toggleDrawer(false);
         setCurrentPage("ChangePassword");
+    };
+    const changeMember = () => {
+        toggleDrawer(false);
+        setCurrentPage("ChangeMember");
     };
     const logout = () => {
         localStorage.clear();
         navigate("/login");
     };
     const PAGE_COMPONENT = [{ title: "Current Task", icon: BiCurrentLocation }, { title: "History", icon: AiOutlineHistory }];
-    const ACCOUNT_COMPONENT = [{ title: "Change Password", func: changePassword }, { title: "Logout", func: logout }];
+    const ACCOUNT_COMPONENT = [{ title: "Change Password", func: changePassword }, { title: "Change Member", func: changeMember }, { title: "Logout", func: logout }];
 
     const toggleDrawer = (status) => {
         setOpenDrawer(status);
@@ -76,7 +81,20 @@ export default function Dashboard() {
                 </List>
             </Drawer>
             <div style={{ flex: 1, display: "flex" }}>
-                {currentPage === "CurrentTask" ? <CurrentTaskPage /> : currentPage === "History" ? <History /> : currentPage === "ChangePassword" ? <ChangePasswordPage /> : <></>}
+                {currentPage === "CurrentTask" ?
+                    <CurrentTaskPage />
+                    :
+                    currentPage === "History" ?
+                        <History />
+                        :
+                        currentPage === "ChangePassword" ?
+                            <ChangePasswordPage />
+                            :
+                            currentPage === "ChangeMember" ?
+                                <ChangeMemberPage />
+                                :
+                                <></>
+                }
             </div>
         </div>
     )
