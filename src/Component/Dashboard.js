@@ -3,19 +3,17 @@ import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import { AiOutlineMenu, AiOutlineHistory } from "react-icons/ai";
-import { BiCurrentLocation } from "react-icons/bi";
+import { AiOutlineMenu, AiOutlineMonitor } from "react-icons/ai";
 import { ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import CurrentTaskPage from "./CurrentTaskPage";
-import History from "./History";
+import MainPage from "./MainPage";
 import ChangePasswordPage from "./ChangePasswordPage";
 import ChangeMemberPage from "./ChangeMemberPage";
 
 export default function Dashboard() {
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [currentPage, setCurrentPage] = useState("CurrentTask");
+    const [currentPage, setCurrentPage] = useState("MainPage");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,7 +32,7 @@ export default function Dashboard() {
         localStorage.clear();
         navigate("/login");
     };
-    const PAGE_COMPONENT = [{ title: "Current Task", icon: BiCurrentLocation }, { title: "History", icon: AiOutlineHistory }];
+    const PAGE_COMPONENT = [{ title: "Main Page", icon: AiOutlineMonitor }];
     const ACCOUNT_COMPONENT = [{ title: "Change Password", func: changePassword }, { title: "Change Member", func: changeMember }, { title: "Logout", func: logout }];
 
     const toggleDrawer = (status) => {
@@ -81,19 +79,16 @@ export default function Dashboard() {
                 </List>
             </Drawer>
             <div style={{ flex: 1, display: "flex" }}>
-                {currentPage === "CurrentTask" ?
-                    <CurrentTaskPage />
+                {currentPage === "MainPage" ?
+                    <MainPage />
                     :
-                    currentPage === "History" ?
-                        <History />
+                    currentPage === "ChangePassword" ?
+                        <ChangePasswordPage />
                         :
-                        currentPage === "ChangePassword" ?
-                            <ChangePasswordPage />
+                        currentPage === "ChangeMember" ?
+                            <ChangeMemberPage />
                             :
-                            currentPage === "ChangeMember" ?
-                                <ChangeMemberPage />
-                                :
-                                <></>
+                            <></>
                 }
             </div>
         </div>
