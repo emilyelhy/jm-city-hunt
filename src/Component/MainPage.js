@@ -8,9 +8,19 @@ export default function MainPage() {
     const [userType, setUserType] = useState();
     const [ckptRecord, setCkptRecord] = useState([]);
     const [taskRecord, setTaskRecord] = useState([]);
+    const [latitude, setLatitude] = useState();
+    const [longitude, setLongitude] = useState();
 
     useEffect(() => {
         setLoggedInGroup(localStorage.getItem("group"));
+    //     if (navigator.geolocation){
+    //         navigator.geolocation.getCurrentPosition((position) => {
+    //             setLatitude(position.coords.latitude);
+    //             setLongitude(position.coords.longitude);
+    //         }, () => {
+    //             console.log("Error in retrieving location details");
+    //         });
+    //     }
     }, []);
 
     useEffect(() => {
@@ -21,12 +31,6 @@ export default function MainPage() {
             });
             const list = await listJSON.json();
             setAllCkpt(list.ckptList);
-            // get all images
-            const imgJSON = await fetch("https://jm-city-hunt-server.vercel.app/getallimage", {
-                method: "GET"
-            });
-            const images = await imgJSON.json();
-            setImgList(images.imageList);
             // get type of user
             const typeJSON = await fetch("https://jm-city-hunt-server.vercel.app/usertype", {
                 method: "POST",
@@ -35,6 +39,14 @@ export default function MainPage() {
             });
             const type = await typeJSON.json();
             setUserType(type.type);
+            // get all images
+            const imgJSON = await fetch("https://jm-city-hunt-server.vercel.app/getallimage", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userType: type.type })
+            });
+            const images = await imgJSON.json();
+            setImgList(images.imageList);
             // calculate ckptRecord and taskRecord
             let ckptRecord = new Array(list.ckptList.length).fill(0);
             let taskRecord = new Array(list.ckptList.length).fill(0);
@@ -68,6 +80,24 @@ export default function MainPage() {
         setTaskRecord(taskRecord);
     };
 
+    const validate = async (e, ckpt) => {
+        e.preventDefault();
+        console.log("Validate for ckpt", ckpt.ckptNo);
+        // navigator.geolocation.getCurrentPosition(async (position) => {
+        //     const resJSON = await fetch("https://jm-city-hunt-server.vercel.app/calibrate", {
+        //         method: "POST",
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude, ckptNo: ckpt.ckptNo, type: userType })
+        //     });
+        //     const res = await resJSON.json();
+        //     if (res.res) refresh();
+        //     setLatitude(position.coords.latitude);
+        //     setLongitude(position.coords.longitude);
+        // }, () => {
+        //     console.log("Error in retrieving location details");
+        // });
+    };
+
     return (
         <div className="TaskMainPage">
             <h1>Main Page for Group {loggedInGroup}</h1>
@@ -82,7 +112,7 @@ export default function MainPage() {
                                         <img style={{ maxWidth: "50%" }} src={`data:image/png;base64,${imgList[i].data}`} alt="Clue of task in pic"></img>
                                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
                                             <h5>Clue: {ckpt.clue[userType]}</h5>
-                                            <Button variant="contained">Validate</Button>
+                                            <Button variant="contained" onClick={(e) => validate(e, ckpt)}>Validate</Button>
                                         </div>
                                     </div>
                                     :
@@ -91,6 +121,7 @@ export default function MainPage() {
                             </div>
                         )
                     })}
+                    <h4>Your current location: ({latitude ? latitude : "--"}, {longitude ? longitude : "--"})</h4>
                 </div>
                 :
                 <h4>Loading...</h4>

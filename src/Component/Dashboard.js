@@ -46,7 +46,7 @@ export default function Dashboard() {
 
     return (
         <div className="Dashboard" style={{ flex: 1, display: "flex" }}>
-            <Button variant="outlined" style={{ position: "absolute", right: 20, top: 10 }} onClick={() => toggleDrawer(true)}>
+            <Button variant="outlined" style={{ position: "fixed", right: 20, top: 10 }} onClick={() => toggleDrawer(true)}>
                 <AiOutlineMenu />
             </Button>
             <Drawer
