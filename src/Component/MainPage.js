@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
+import { AiOutlineCheckCircle, AiOutlineSync } from "react-icons/ai";
 
 export default function MainPage() {
     const [loggedInGroup, setLoggedInGroup] = useState();
@@ -13,14 +14,14 @@ export default function MainPage() {
 
     useEffect(() => {
         setLoggedInGroup(localStorage.getItem("group"));
-    //     if (navigator.geolocation){
-    //         navigator.geolocation.getCurrentPosition((position) => {
-    //             setLatitude(position.coords.latitude);
-    //             setLongitude(position.coords.longitude);
-    //         }, () => {
-    //             console.log("Error in retrieving location details");
-    //         });
-    //     }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setLatitude(position.coords.latitude);
+                setLongitude(position.coords.longitude);
+            }, () => {
+                console.log("Error in retrieving location details");
+            });
+        }
     }, []);
 
     useEffect(() => {
@@ -64,10 +65,11 @@ export default function MainPage() {
         if (loggedInGroup) init();
     }, [loggedInGroup]);
 
-    const refresh = async () => {
+    const refresh = async (e) => {
+        e.preventDefault();
         // calculate ckptRecord and taskRecord
-        let ckptRecord = new Array(allCkpt.ckptList.length).fill(0);
-        let taskRecord = new Array(allCkpt.ckptList.length).fill(0);
+        let ckptRecord = new Array(allCkpt.length).fill(0);
+        let taskRecord = new Array(allCkpt.length).fill(0);
         const recordJSON = await fetch("https://jm-city-hunt-server.vercel.app/progress", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
@@ -82,25 +84,30 @@ export default function MainPage() {
 
     const validate = async (e, ckpt) => {
         e.preventDefault();
-        console.log("Validate for ckpt", ckpt.ckptNo);
-        // navigator.geolocation.getCurrentPosition(async (position) => {
-        //     const resJSON = await fetch("https://jm-city-hunt-server.vercel.app/calibrate", {
-        //         method: "POST",
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude, ckptNo: ckpt.ckptNo, type: userType })
-        //     });
-        //     const res = await resJSON.json();
-        //     if (res.res) refresh();
-        //     setLatitude(position.coords.latitude);
-        //     setLongitude(position.coords.longitude);
-        // }, () => {
-        //     console.log("Error in retrieving location details");
-        // });
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const resJSON = await fetch("https://jm-city-hunt-server.vercel.app/validatelocation", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude, ckptNo: ckpt.ckptNo, groupNo: loggedInGroup })
+            });
+            const res = await resJSON.json();
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+            if (res.res) refresh(e);
+        }, () => {
+            console.log("Error in retrieving location details");
+        });
     };
 
     return (
         <div className="TaskMainPage">
-            <h1>Main Page for Group {loggedInGroup}</h1>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
+                <h1>Main Page for Group {loggedInGroup}</h1>
+                <Button variant="contained" onClick={(e) => refresh(e)}>
+                    <AiOutlineSync style={{ marginRight: 5 }} />
+                    <h4 style={{ margin: 0 }}>Refresh</h4>
+                </Button>
+            </div>
             {allCkpt.length > 0 && imgList.length > 0 && ckptRecord.length > 0 && taskRecord.length > 0 && userType ?
                 <div>
                     {allCkpt.map((ckpt, i) => {
@@ -116,7 +123,21 @@ export default function MainPage() {
                                         </div>
                                     </div>
                                     :
-                                    <></>
+                                    <div>
+                                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+                                            <h5 style={{ marginRight: 20, marginBottom: 0 }}>Clue: {ckpt.clue[userType]}</h5>
+                                            <h5 style={{ marginBottom: 0 }}>Description: {ckpt.description}</h5>
+                                        </div>
+                                        <h5>Task: {ckpt.taskContent[userType]}</h5>
+                                        {taskRecord[i] === 0 ?
+                                            <div style={{ marginBottom: 10, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "baseline" }} >
+                                                <h5 style={{ marginRight: 5, marginTop: 0, marginBottom: 0 }}>Task Submission: </h5>
+                                                <a href={ckpt.taskURL[userType]} target="_blank" rel="noreferrer">Link</a>
+                                            </div>
+                                            :
+                                            <AiOutlineCheckCircle style={{ color: "green" }} />
+                                        }
+                                    </div>
                                 }
                             </div>
                         )
