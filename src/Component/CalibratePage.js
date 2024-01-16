@@ -26,7 +26,7 @@ export default function CalibratePage() {
             });
             const dist = await distJSON.json();
             const distArray = [...distanceList]
-            distArray[i] = { distanceY: dist.distanceY, distanceF: dist.distanceF };
+            distArray[i] = { distanceY: dist.distanceY, distanceF: dist.distanceF, distanceE: dist.distanceE };
             setDistanceList(distArray);
             setCurrentLat(position.coords.latitude);
             setCurrentLong(position.coords.longitude);
@@ -59,7 +59,7 @@ export default function CalibratePage() {
             });
             const list = await listJSON.json();
             setCkptList(list.ckptList);
-            setDistanceList(new Array(list.ckptList.length).fill({ distanceY: -999, distanceF: -999 }));
+            setDistanceList(new Array(list.ckptList.length).fill({ distanceY: -999, distanceF: -999, distanceE: -999 }));
         };
         init();
     }, []);
@@ -93,13 +93,16 @@ export default function CalibratePage() {
                                 <h5>ckpt #: {ckpt.ckptNo}, description: {ckpt.description}</h5>
                                 <h5 style={{ marginBottom: 0 }}>Saved geolocation: </h5>
                                 <h5 style={{ margin: 0 }}>Youth: ({ckpt.location.Y.latitude}, {ckpt.location.Y.longitude})</h5>
-                                <h5 style={{ marginTop: 0 }}>Family: ({ckpt.location.F.latitude}, {ckpt.location.F.longitude})</h5>
+                                <h5 style={{ margin: 0 }}>Family: ({ckpt.location.F.latitude}, {ckpt.location.F.longitude})</h5>
+                                <h5 style={{ marginTop: 0 }}>Elderly: ({ckpt.location.E.latitude}, {ckpt.location.E.longitude})</h5>
                                 <h5 style={{ marginBottom: 0 }}>Distance to this ckpt:</h5>
                                 <h5 style={{ margin: 0 }}>Youth: {distanceList[i].distanceY * 1000}m</h5>
-                                <h5 style={{ marginTop: 0 }}>Family: {distanceList[i].distanceF * 1000}m</h5>
+                                <h5 style={{ margin: 0 }}>Family: {distanceList[i].distanceF * 1000}m</h5>
+                                <h5 style={{ marginTop: 0 }}>Elderly: {distanceList[i].distanceE * 1000}m</h5>
                                 <Button variant="contained" style={{ margin: 10 }} onClick={(e) => calculateDistance(e, ckpt, i)}>Calculate distance</Button>
                                 <Button variant="contained" color="error" style={{ margin: 10 }} onClick={(e) => calibrate(e, ckpt, "Y")}>Calibrate Youth</Button>
                                 <Button variant="contained" color="error" style={{ margin: 10 }} onClick={(e) => calibrate(e, ckpt, "F")}>Calibrate Family</Button>
+                                <Button variant="contained" color="error" style={{ margin: 10 }} onClick={(e) => calibrate(e, ckpt, "E")}>Calibrate Elderly</Button>
                             </div>
                         )
                     })}
