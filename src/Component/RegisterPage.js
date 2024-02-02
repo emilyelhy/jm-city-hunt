@@ -114,6 +114,7 @@ export default function RegisterPage() {
                     >
                         <FormControlLabel value="Y" control={<Radio />} label="Youth" />
                         <FormControlLabel value="F" control={<Radio />} label="Family" />
+                        <FormControlLabel value="E" control={<Radio />} label="Elderly" />
                     </RadioGroup>
                 </FormControl>
                 <div>
